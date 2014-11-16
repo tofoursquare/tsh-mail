@@ -1,5 +1,11 @@
 #! /bin/bash
 
+chown -R bobware /home/bobware/
+chown -R leaf /home/leaf/
+chown -R othniel /home/othniel/
+chown -R joanie /home/joanie/
+chown -R scott /home/scott/
+
 /usr/sbin/dovecot -F &
 /usr/sbin/postfix start # postfix won't get waited on.
 
