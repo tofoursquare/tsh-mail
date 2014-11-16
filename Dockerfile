@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y postfix
-RUN apt-get install -y dovecot-common
+RUN apt-get install -y dovecot-common dovecot-imapd dovecot-pop3d
 
 RUN useradd bobware
 RUN useradd leaf
