@@ -5,18 +5,23 @@ RUN apt-get upgrade
 RUN apt-get install -y postfix
 RUN apt-get install -y dovecot-common
 
-ADD ./etc/bind /etc/bind
-ADD start-tsh-dns /start-tsh-dns
+RUN useradd bobware
+RUN useradd leaf
+RUN useradd othniel
+RUN useradd joanie
+RUN useradd scott
+
+RUN echo "letmein:bobware" | chpasswd
+RUN echo "letmein:leaf" | chpasswd
+RUN echo "letmein:othniel" | chpasswd
+RUN echo "letmein:joanie" | chpasswd
+RUN echo "letmein:scott" | chpasswd
+
+ADD ./etc/ /etc/
+ADD start-tsh-mail /start-tsh-mail
 
 RUN newaliases
 
-RUN useradd
-RUN useradd
-RUN useradd
-RUN useradd
-RUN useradd
-RUN useradd
+EXPOSE 25 110 143 465 993 995
 
-EXPOSE 53
-
-CMD ["/start-tsh-dns"]
+CMD ["/start-tsh-mail"]

@@ -1,3 +1,6 @@
 #! /bin/bash
 
-/usr/sbin/named -u bind -g
+/usr/sbin/dovecot -F &
+/usr/sbin/postfix start # postfix won't get waited on.
+
+wait
