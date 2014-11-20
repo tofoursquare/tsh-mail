@@ -1,40 +1,40 @@
 #!/bin/bash
 
 if [[ -z "$1" ]]; then
-  echo "syntax:  cme-cloud [start stop restart update]"
+  echo "syntax:  tsh-mail [start stop restart update]"
   exit 1
 fi
 
 if [[ "$1" == "start" || "$1" == "restart" ]]; then
-  echo "Checking to see if the Content Management Engine is already running . . . "
-  id=$(docker ps | grep cme-cloud | awk '{print $1}')
+  echo "Checking to see if TSH Mail Services are already running . . . "
+  id=$(docker ps | grep tsh-mail | awk '{print $1}')
   if [[ ${#id} != 0 ]]; then
     echo "found.  stopping."
     docker stop $id
   else
     echo "false."
   fi
-  echo "Starting the Content Management Engine . . ."
-  docker run -d -p 8081:80 andrewhald/cme-cloud /var/www/html/cme-cloud/start-cme-cloud
+  echo "Starting TSH Mail Services . . ."
+  docker run -d -p 25:25 -p 110:110 -p 143:143 -p 465:465 -p 993:993 -p 995:995 -v /opt/docker-data/tsh-mail/home/:/home/ tofoursquare/tsh-mail /start-tsh-mail
 elif [[ "$1" == "update" ]]; then
-  echo "Checking for an existing instance of the Content Management Engine . . . "
-  id=$(docker ps | grep cme-cloud | awk '{print $1}')
+  echo "Checking for an existing instance of TSH Mail Services . . . "
+  id=$(docker ps | grep tsh-mail | awk '{print $1}')
   if [[ ${#id} != 0 ]]; then
     echo "found.  stopping. "
     docker stop $id
   fi
-  echo "Updating the Content Management Engine . . . "
-  echo "Pulling andrewhald/cme-cloud:latest . . . "
-  docker pull andrewhald/cme-cloud:latest
-  echo "Starting the newest version of the Content Management Engine . . . " 
-  docker run -d -p 8081:80 andrewhald/cme-cloud /var/www/html/cme-cloud/start-cme-cloud
+  echo "Updating TSH Mail Services . . . "
+  echo "Pulling tofoursquare/tsh-mail:latest . . . "
+  docker pull tofoursquare/tsh-mail:latest
+  echo "Starting the newest version of TSH Mail Services . . . " 
+  docker run -d -p 25:25 -p 110:110 -p 143:143 -p 465:465 -p 993:993 -p 995:995 -v /opt/docker-data/tsh-mail/home/:/home/ tofoursquare/tsh-mail /start-tsh-mail
 elif [[ "$1" == "stop" ]]; then
-  echo "Stopping the Content Management Engine . . ."
-  id=$(docker ps | grep cme-cloud | awk '{print $1}')
+  echo "Stopping TSH Mail Services . . ."
+  id=$(docker ps | grep tsh-mail | awk '{print $1}')
   if [[ ${#id} != 0 ]]; then
     docker stop $id
   else
-    echo "cme is not currently running. "
+    echo "tsh-mail is not currently running. "
   fi
 else
   echo "error:  the only valid options are start, stop, restart and update."
