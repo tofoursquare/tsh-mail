@@ -18,7 +18,7 @@ RUN echo "joanie:letmein" | chpasswd
 RUN echo "scott:letmein" | chpasswd
 
 ADD ./etc/ /etc/
-ADD ./var/ /var/
+ADD ./var/spool/postfix/etc/ /var/spool/postfix/etc/
 ADD start-tsh-mail /start-tsh-mail
 
 RUN newaliases
