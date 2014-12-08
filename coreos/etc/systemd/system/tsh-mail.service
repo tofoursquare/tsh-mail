@@ -5,9 +5,11 @@ Requires=docker.service
 
 [Service]
 TimeoutStartSec=0
-ExecStartPre=/opt/bin/tsh-mail stop
-ExecStart=/usr/bin/docker run -p 25:25 -p 110:110 -p 143:143 -p 465:465 -p 993:993 -p 995:995 -v /opt/docker-data/tsh-mail/home/:/home/ tofoursquare/tsh-mail /start-tsh-mail
-ExecStop=/opt/bin/tsh-mail stop
+ExecStartPre=-/usr/bin/docker stop tsh-mail-running
+ExecStartPre=-/usr/bin/docker rm tsh-mail-running
+ExecStart=/usr/bin/docker run --name tsh-mail-running -p 25:25 -p 110:110 -p 143:143 -p 465:465 -p 993:993 -p 995:995 -v /opt/docker-data/tsh-mail/home/:/home/ tofoursquare/tsh-mail /start-tsh-mail
+ExecStop=/usr/bin/docker stop tsh-mail-running
+ExecStopPost=/usr/bin/docker rm tsh-mail-running
 Restart=on-failure
 
 [Install]
