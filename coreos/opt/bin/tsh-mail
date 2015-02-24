@@ -6,28 +6,37 @@ if [[ -z "$1" ]]; then
 fi
 
 if [[ "$1" == "start" || "$1" == "restart" ]]; then
+  echo "Checking to see if TSH Mail Services are already running . . . "
+  id=$(docker ps | grep tsh-mail | awk '{print $1}')
+  if [[ ${#id} != 0 ]]; then
+    echo "found.  stopping."
+    docker stop $id
+  else
+    echo "false."
+  fi
   echo "Starting TSH Mail Services . . ."
-  systemctl start tsh-mail.service
+  docker run -d -p 25:25 -p 110:110 -p 143:143 -p 465:465 -p 993:993 -p 995:995 -v /opt/docker-data/tsh-mail/home/:/home/ tofoursquare/tsh-mail /start-tsh-mail
 elif [[ "$1" == "update" ]]; then
   echo "Checking for an existing instance of TSH Mail Services . . . "
   id=$(docker ps | grep tsh-mail | awk '{print $1}')
   if [[ ${#id} != 0 ]]; then
     echo "found.  stopping. "
-    systemctl stop tsh-mail.service
+    docker stop $id
   fi
   echo "Updating TSH Mail Services . . . "
   echo "Pulling tofoursquare/tsh-mail:latest . . . "
   docker pull tofoursquare/tsh-mail:latest
-  echo "Starting the newest version of TSH Mail Services . . . "
-  systemctl start tsh-mail.service
+  echo "Starting the newest version of TSH Mail Services . . . " 
+  docker run -d -p 25:25 -p 110:110 -p 143:143 -p 465:465 -p 993:993 -p 995:995 -v /opt/docker-data/tsh-mail/home/:/home/ tofoursquare/tsh-mail /start-tsh-mail
 elif [[ "$1" == "stop" ]]; then
   echo "Stopping TSH Mail Services . . ."
   id=$(docker ps | grep tsh-mail | awk '{print $1}')
   if [[ ${#id} != 0 ]]; then
-    systemctl stop tsh-mail.service
+    docker stop $id
   else
     echo "tsh-mail is not currently running. "
   fi
 else
   echo "error:  the only valid options are start, stop, restart and update."
 fi
+
