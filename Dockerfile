@@ -9,13 +9,11 @@ RUN useradd bobware
 RUN useradd leaf
 RUN useradd othniel
 RUN useradd joanie
-RUN useradd scott
 
 RUN echo "bobware:letmein" | chpasswd
 RUN echo "leaf:letmein" | chpasswd
 RUN echo "othniel:letmein" | chpasswd
 RUN echo "joanie:letmein" | chpasswd
-RUN echo "scott:letmein" | chpasswd
 
 ADD ./etc/ /etc/
 ADD ./var/spool/postfix/etc/ /var/spool/postfix/etc/
