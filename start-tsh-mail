@@ -4,7 +4,6 @@ chown -R bobware /home/bobware/
 chown -R leaf /home/leaf/
 chown -R othniel /home/othniel/
 chown -R joanie /home/joanie/
-chown -R scott /home/scott/
 
 /usr/sbin/rsyslogd -n &
 /usr/sbin/dovecot -F &
